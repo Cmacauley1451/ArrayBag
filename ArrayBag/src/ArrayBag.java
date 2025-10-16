@@ -1,0 +1,78 @@
+import java.lang.reflect.Array;
+
+public class ArrayBag<T> implements BagInterface<T> {
+
+
+    private T[] bag;
+    private int numberOfEntries;
+    private static final int DEFAULT_CAPACITY = 25;
+    private boolean initialised = false;
+    private static final int MAX_CAPACITY = 1000;
+
+    private boolean isArrayFull() {
+        return (bag.length == numberOfEntries);
+    }
+
+    public ArrayBag() {
+        this(DEFAULT_CAPACITY);
+    }
+
+    public ArrayBag(int capacity) {
+        T[] tempBag = (T[]) new Object[capacity];
+        bag = tempBag;
+        numberOfEntries = 0;
+    }
+
+    public int getCurrentSize() {return 0; }
+
+
+    public boolean isEmpty() {return false;}
+
+    public boolean addNewEntry(T newEntry) {
+        if (isArrayFull()) return false;
+        else {
+            bag[numberOfEntries++] = newEntry;
+            return true;
+        }
+    }
+
+    public T remove() {return null;}
+
+    public boolean remove(T anEntry){return false;}
+
+    public void clear(){}
+
+    public int getFrequencyOf(T anEntry){return 0;}
+
+    public boolean contains(T anEntry){return false;}
+
+    public T[] toArray(){T[] resultArray = (T[]) new Object[numberOfEntries];
+    System.arraycopy(bag, 0, resultArray, 0, numberOfEntries);
+    return resultArray;
+    }
+
+    public static void main(String[] args) {
+        ArrayBag<String> bagOfNames = new ArrayBag<String>(5);
+
+        System.out.println("Adding Adrian..." + bagOfNames.addNewEntry("Adrian"));
+        System.out.println("Adding Mary..." + bagOfNames.addNewEntry("Mary"));
+        System.out.println("Adding Zoe..." + bagOfNames.addNewEntry("Zoe"));
+
+        Object[] arrayOfNames = bagOfNames.toArray();
+        for (Object name : arrayOfNames) {
+            System.out.print(name + "...");
+        }
+        System.out.println();
+
+        System.out.println("Adding John..." + bagOfNames.addNewEntry("John"));
+        System.out.println("Adding Siobhan..." + bagOfNames.addNewEntry("Siobhan"));
+        System.out.println("Adding Patrick..." + bagOfNames.addNewEntry("Patrick"));
+
+        Object[] arrayOfNames2 = bagOfNames.toArray();
+        for (Object name : arrayOfNames2) {
+            System.out.print(name + "...");
+        }
+    }
+
+
+}
