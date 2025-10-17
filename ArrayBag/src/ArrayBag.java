@@ -1,6 +1,6 @@
 import java.lang.reflect.Array;
 
-public class ArrayBag<T> implements BagInterface<T> {
+public final class ArrayBag<T> implements BagInterface<T> {
 
 
     private T[] bag;
@@ -13,14 +13,23 @@ public class ArrayBag<T> implements BagInterface<T> {
         return (bag.length == numberOfEntries);
     }
 
+    private void checkInitialisation() {
+        if (!initialised)
+            throw new SecurityException("Arraybag object is not initialised properly");
+    }
+
     public ArrayBag() {
         this(DEFAULT_CAPACITY);
     }
 
     public ArrayBag(int capacity) {
-        T[] tempBag = (T[]) new Object[capacity];
-        bag = tempBag;
-        numberOfEntries = 0;
+        if (capacity <= MAX_CAPACITY) {
+            T[] tempBag = (T[]) new Object[capacity];
+            bag = tempBag;
+            numberOfEntries = 0;
+            initialised = true;
+        } else throw new IllegalStateException("Attempt to create a bag where the capacity exceeds the maximum");
+
     }
 
     public int getCurrentSize() {return 0; }
@@ -29,6 +38,7 @@ public class ArrayBag<T> implements BagInterface<T> {
     public boolean isEmpty() {return false;}
 
     public boolean addNewEntry(T newEntry) {
+        checkInitialisation();
         if (isArrayFull()) return false;
         else {
             bag[numberOfEntries++] = newEntry;
