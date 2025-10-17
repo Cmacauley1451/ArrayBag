@@ -32,10 +32,10 @@ public final class ArrayBag<T> implements BagInterface<T> {
 
     }
 
-    public int getCurrentSize() {return 0; }
+    public int getCurrentSize() {return numberOfEntries; }
 
 
-    public boolean isEmpty() {return false;}
+    public boolean isEmpty() {return (numberOfEntries == 0);}
 
     public boolean addNewEntry(T newEntry) {
         checkInitialisation();
@@ -46,15 +46,37 @@ public final class ArrayBag<T> implements BagInterface<T> {
         }
     }
 
-    public T remove() {return null;}
+    public T remove() {
+        checkInitialisation();
+        T result = null;
+        if (numberOfEntries > 0) {
+            result = bag[numberOfEntries - 1];
+            bag[numberOfEntries - 1] = null;
+            numberOfEntries--;
+        }
+        return result;
+    }
 
     public boolean remove(T anEntry){return false;}
 
-    public void clear(){}
+    public void clear(){
+        while (!isEmpty()) remove();
+    }
 
-    public int getFrequencyOf(T anEntry){return 0;}
+    public int getFrequencyOf(T anEntry){
+        int count = 0;
+        for (int i = 0; i < numberOfEntries; i++)
+            if (bag[i].equals(anEntry)) count++;
+        return count;
+    }
 
-    public boolean contains(T anEntry){return false;}
+    public boolean contains(T anEntry){
+        boolean found = false;
+        int index = 0;
+        while (!found && index < numberOfEntries)
+            if (bag[index++].equals(anEntry)) found = true;
+        return found;
+    }
 
     public T[] toArray(){T[] resultArray = (T[]) new Object[numberOfEntries];
     System.arraycopy(bag, 0, resultArray, 0, numberOfEntries);
