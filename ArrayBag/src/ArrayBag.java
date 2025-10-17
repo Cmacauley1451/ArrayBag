@@ -18,6 +18,17 @@ public final class ArrayBag<T> implements BagInterface<T> {
             throw new SecurityException("Arraybag object is not initialised properly");
     }
 
+    private T removeElementAt(int index) {
+        T result = null;
+        if (!isEmpty() && index >= 0 && index < numberOfEntries) {
+            result = bag[index];
+            bag[index] = bag[numberOfEntries - 1];
+            bag[numberOfEntries - 1] = null;
+            numberOfEntries--;
+        }
+        return result;
+    }
+
     public ArrayBag() {
         this(DEFAULT_CAPACITY);
     }
@@ -48,16 +59,18 @@ public final class ArrayBag<T> implements BagInterface<T> {
 
     public T remove() {
         checkInitialisation();
-        T result = null;
-        if (numberOfEntries > 0) {
-            result = bag[numberOfEntries - 1];
-            bag[numberOfEntries - 1] = null;
-            numberOfEntries--;
-        }
-        return result;
+        return removeElementAt(numberOfEntries - 1);
     }
 
-    public boolean remove(T anEntry){return false;}
+    public boolean remove(T anEntry){
+        boolean found = false;
+        int index = 0;
+        while (!found && index < numberOfEntries)
+            if (bag[index].equals(anEntry)) found = true;
+        else index++;
+        if (found) removeElementAt(index);
+        return found;
+    }
 
     public void clear(){
         while (!isEmpty()) remove();
@@ -81,6 +94,14 @@ public final class ArrayBag<T> implements BagInterface<T> {
     public T[] toArray(){T[] resultArray = (T[]) new Object[numberOfEntries];
     System.arraycopy(bag, 0, resultArray, 0, numberOfEntries);
     return resultArray;
+    }
+
+    public String toString() {
+        String strResult = "Bag[";
+        for (int i= 0; i < numberOfEntries; i++)
+            strResult += bag[i] + " ";
+        strResult += "]";
+        return strResult;
     }
 
     public static void main(String[] args) {
