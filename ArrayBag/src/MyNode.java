@@ -15,4 +15,17 @@ public class MyNode<T> {
     public MyNode<T> getNext() { return next; }
 
     public void setNext(MyNode<T> nextNode) { next = nextNode; }
+
+    public static void main(String[] args) {
+        MyNode<Integer> node1 = new MyNode<Integer>(1);
+        MyNode<Integer> node2 = new MyNode<Integer>(2);
+        MyNode<Integer> node3 = new MyNode<Integer>(3);
+
+        node1.setNext(node2);
+        node2.setNext(node3);
+
+        System.out.println("Value of node1 is " + node1.getData());
+        System.out.println("Value of node2 is " + node2.getData());
+        System.out.println("Value of node3 is " + node3.getData());
+    }
 }
